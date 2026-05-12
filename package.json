@@ -1,6 +1,6 @@
 {
-  "name": "sang-noir-supabase-v17",
-  "version": "17.0.0",
+  "name": "vampires-de-valdoria",
+  "version": "18.0.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -13,5 +13,5 @@
     "vite": "^6.0.0"
   },
   "devDependencies": {},
-  "description": "Sang Noir v17 - Connexion Discord, admin sécurisé, gestion images Supabase Storage."
+  "description": "Vampires de Valdoria v18 - partie corrigée, actions de rôle, admin sans code, gestion images."
 }

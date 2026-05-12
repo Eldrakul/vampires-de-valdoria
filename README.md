@@ -1,89 +1,70 @@
-# Sang Noir Online — Supabase v17
+# Vampires de Valdoria v18
 
-Cette version ajoute :
+Version corrigée et nettoyée.
 
-- Connexion Discord via Supabase Auth.
-- Onglet Admin accessible uniquement aux profils avec `role = 'admin'`.
-- Gestion des images depuis le site :
-  - ajouter une image ;
-  - remplacer une image en réutilisant la même clé ;
-  - supprimer une image ;
-  - classer par catégorie : avatar, boutique, rôle, ADN, fond, interface, autre.
-- Association d’images aux objets de la boutique.
-- Gestion des comptes autorisés :
-  - passer un compte en admin ;
-  - retirer l’admin.
-- Bucket Supabase Storage `sang-noir-assets`.
+## Ce que cette version corrige
 
-## 1. SQL à exécuter
+- Le panneau Créer/Rejoindre disparaît quand le joueur est déjà dans une partie.
+- Le bouton Lancer disparaît après le début de la partie.
+- Impossible de lancer plusieurs fois la même partie.
+- Ajout d’un bouton Quitter la partie.
+- Affichage clair de la phase actuelle : lobby, jour, nuit, terminé.
+- Ajout d’un vrai panneau Actions selon la phase et le rôle.
+- Actions de jour : vote.
+- Actions de nuit :
+  - Vampire : mordre / drainer.
+  - Médecin : protéger.
+  - Prêtre : bénir.
+  - Généticien : analyser l’ADN.
+  - Enquêteur : inspecter.
+  - Humain : dormir.
+- Résolution de nuit améliorée.
+- Les bots votent et agissent automatiquement.
+- Le mode entraînement est moins violent.
+- Onglet Admin visible seulement aux comptes `role = admin`.
+- Gestion des admins directement depuis le site une fois le premier admin créé.
+- Gestion des images via Supabase Storage.
+- Association d’images aux objets boutique.
+- Nom du jeu remplacé par **Vampires de Valdoria**.
 
-Dans Supabase → SQL Editor → New Query, colle le contenu de :
+## SQL à exécuter
+
+Dans Supabase → SQL Editor → New Query, colle tout le contenu de :
 
 ```text
-supabase/migration_v17_discord_admin_media.sql
+supabase/migration_v18_game_admin_fix.sql
 ```
 
 Puis clique sur Run.
 
-## 2. Te donner l’accès admin
+## Premier admin
 
-Après avoir créé ton compte sur le site, exécute dans Supabase SQL Editor :
+Une seule fois, après avoir créé ton compte, exécute dans Supabase SQL Editor :
 
 ```sql
 update public.profiles
 set role = 'admin'
 where id = (
   select id from auth.users
-  where email = 'rttyrttyttttt@gmail.com'
+  where email = 'TON_EMAIL'
 );
 ```
 
-Si ton email de compte est différent, remplace-le.
+Ensuite, tu peux gérer les autres admins directement depuis l’onglet Admin du site.
 
-## 3. Activer Discord
-
-Dans Supabase :
-
-1. Va dans Authentication.
-2. Va dans Providers.
-3. Active Discord.
-4. Crée une application dans Discord Developer Portal.
-5. Copie le Client ID et Client Secret dans Supabase.
-6. Ajoute l’URL callback Supabase dans Discord OAuth2.
-
-L’URL callback ressemble à :
-
-```text
-https://TON-PROJET.supabase.co/auth/v1/callback
-```
-
-## 4. URL Configuration Supabase
-
-Dans Authentication → URL Configuration :
-
-Site URL :
-
-```text
-https://sang-noir-online.vercel.app
-```
-
-Redirect URLs :
-
-```text
-https://sang-noir-online.vercel.app/**
-http://localhost:5173/**
-```
-
-## 5. Déploiement
+## Déploiement
 
 ```bash
 git add .
-git commit -m "Ajoute Discord et panel admin images"
+git commit -m "Vampires de Valdoria v18"
 git push
 ```
 
 Vercel redéploiera automatiquement.
 
-## Important
+## Variables Vercel
 
-La gestion des images utilise Supabase Storage. Les images sont publiques en lecture, mais seuls les admins peuvent les ajouter/remplacer/supprimer.
+```env
+VITE_SUPABASE_URL=https://konipfqbzmlqaivvxszt.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_...
+```
